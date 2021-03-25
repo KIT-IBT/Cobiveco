@@ -19,7 +19,6 @@ mmgSizingParam = [0.1 0.9 1.1];
 
 %%
 s = vtkLoopSubdivisionFilter(sur, numSubdiv);
-s.points = double(s.points);
 
 if strcmp(ventricles, 'lv')
     endo = vtkThreshold(s, 'points', 'class', [3 3]);
@@ -42,7 +41,9 @@ d = 2*max(d-0.5, 0);
 edges = vtkFeatureEdges(endo, 1, 0, 0, 0, 0);
 idsEdges = vtkMapPointIds(s, edges);
 
-L = massmatrix(s.points, s.cells) \ cotmatrix(s.points, s.cells);
+P = double(s.points);
+C = double(s.cells);
+L = massmatrix(P,C) \ cotmatrix(P,C);
 LL = (L'*L);
 I = speye(size(L));
 
