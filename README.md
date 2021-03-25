@@ -1,5 +1,5 @@
 # Cobiveco
-**Co**nsistent **bi**ventricular **co**ordinates
+**Co**nsistent **bive**ntricular **co**ordinates (https://arxiv.org/abs/2102.02898)
 
 ![Coordinates](https://user-images.githubusercontent.com/31965820/103575830-8bc56400-4ed2-11eb-913d-1bc1c338622d.png)
 
