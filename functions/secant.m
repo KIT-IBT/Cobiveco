@@ -1,4 +1,4 @@
-function x = secant(fun, x1, x2, tol, maxit)
+function [x,flag,iter] = secant(fun, x1, x2, tol, maxit)
 
 if nargin < 5
     maxit = 100;
@@ -16,16 +16,20 @@ if abs(f2) < tol
     return;
 end
 
-for i = 1:maxit
+flag = 1;
+
+for iter = 1:maxit
     if abs(f1-f2) < 1e-12
+        flag = 0;
         break;
     end
     x = x1 - (x1-x2)/(f1-f2) * f1;
     f = fun(x);
     
-    % fprintf('%d\t%.3e\t%.3e\n', i, x, abs(f));
+    fprintf('%d\t%.3e\t%.3e\n', iter, x, abs(f));
     
     if abs(f) < tol
+        flag = 0;
         break;
     else
         x2 = x1;

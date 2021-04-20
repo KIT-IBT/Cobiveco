@@ -7,7 +7,7 @@ o.m0.vol = vtkRead(sprintf('%s.vtu', o.cfg.inPrefix));
 o.m0.vol = vtkDeleteDataArrays(o.m0.vol);
 o.m0.sur = vtkDataSetSurfaceFilter(o.m0.vol);       % surface of volume mesh
 o.m0.surToVol = vtkMapPointIds(o.m0.vol, o.m0.sur); % mapping from surface to volume point ids
-o.meanEdgLen = mean(vtkEdgeLengths(o.m0.vol));      % mean edge length
+o.m0.meanEdgLen = mean(vtkEdgeLengths(o.m0.vol));   % mean edge length
 o.result = o.m0.vol;
 
 vtpFile = sprintf('%s.vtp', o.cfg.inPrefix);
@@ -32,13 +32,12 @@ else
     o.m0.sur.pointData.class(ids>cnp(2) & ids<=cnp(3)) = 3;  % endoLv
     o.m0.sur.pointData.class(ids>cnp(3)) = 4;                % endoRv
     mappingDist = sqrt(sum((o.m0.sur.points-surAppended.points(ids,:)).^2,2));
-    o.m0.sur.pointData.class(mappingDist > o.cfg.mappingTol*o.meanEdgLen) = 0;
+    o.m0.sur.pointData.class(mappingDist > o.cfg.mappingTol*o.m0.meanEdgLen) = 0;
 end
 
 P0 = double(o.m0.vol.points);
 C0 = double(o.m0.vol.cells);
 o.m0.L = cotmatrix(P0, C0);
-o.m0.massMat = massmatrix(P0, C0, 'voronoi');
 
 if o.cfg.exportLevel > 1
     o.m0.debug = o.m0.vol;

@@ -9,7 +9,7 @@ t = toc;
 isovalue = 0.5;
 numTries = 5;
 for i = 1:numTries
-    [o.m2.vol,mmgStatus,mmgOutput2] = mmg(o.m1.vol, o.m1.ridgeLaplace, sprintf('-ls %1.5e -nr -hausd %1.5e -hmin %1.5e -hmax %1.5e', isovalue, o.cfg.mmgSizingParam(:)'*o.meanEdgLen));
+    [o.m2.vol,mmgStatus,mmgOutput2] = mmg(o.m1.vol, o.m1.ridgeLaplace, sprintf('-ls %1.5e -nr -hausd %1.5e -hmin %1.5e -hmax %1.5e', isovalue, o.cfg.mmgSizingParam(:)'*o.m0.meanEdgLen));
 
     if o.cfg.exportLevel > 1 || mmgStatus ~= 0
         if i == 1

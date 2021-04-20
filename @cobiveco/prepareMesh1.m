@@ -9,7 +9,7 @@ t = toc;
 isovalue = 0.5;
 numTries = 5;
 for i = 1:numTries
-    [o.m1.vol,mmgStatus,mmgOutput1] = mmg(o.m0.vol, o.m0.tvLaplace, sprintf('-ls %1.5e -nr -hausd %1.5e -hmin %1.5e -hmax %1.5e', isovalue, o.cfg.mmgSizingParam(:)'*o.meanEdgLen));
+    [o.m1.vol,mmgStatus,mmgOutput1] = mmg(o.m0.vol, o.m0.tvLaplace, sprintf('-ls %1.5e -nr -hausd %1.5e -hmin %1.5e -hmax %1.5e', isovalue, o.cfg.mmgSizingParam(:)'*o.m0.meanEdgLen));
 
     if o.cfg.exportLevel > 1 || mmgStatus ~= 0
         if i == 1
@@ -35,11 +35,13 @@ end
 o.m1.sur = vtkDataSetSurfaceFilter(vtkDeleteDataArrays(o.m1.vol));
 o.m1.sur = vtkArrayMapperNearestNeighbor(o.m0.sur, o.m1.sur);
 o.m1.surToVol = vtkMapPointIds(o.m1.vol, o.m1.sur);
+o.m1.meanEdgLen = mean(vtkEdgeLengths(o.m1.vol));
 
 P1 = double(o.m1.vol.points);
 C1 = double(o.m1.vol.cells);
 o.m1.L = cotmatrix(P1, C1);
 o.m1.G = grad(P1, C1);
+o.m1.massMat = massmatrix(P1, C1, 'voronoi');
 o.m1.M = baryInterpMat(P1, C1, o.m0.vol.points);
 
 if o.cfg.exportLevel > 1

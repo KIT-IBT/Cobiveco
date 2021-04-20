@@ -44,6 +44,15 @@ The following [examples](examples) illustrate the use of Cobiveco:
 * [example_mapping.m](examples/example_mapping.m): Uses the coordinates to map data between geo1 and geo2.
 * [example_polarProjection.m](examples/example_polarProjection.m): Uses the coordinates to project data onto polar plots.
 
+## Hints
+
+To speed up the computation for fine meshes (several millions of nodes), we recommend to increase the sizing parameters of Mmg. This way, all coordinates except the binary transventricular coordinate are automatically computed on coarser meshes and interpolated to the original mesh. As the non-binary coordinates are spatially low-frequent, an edge length of slightly below 1 mm (or at maximum one third of the smallest wall thickness) is sufficient.
+If you want to compute coordinates for a mesh with an average edge length of 0.3 mm, for example, scale the default value for the input 'mmgSizingParam' by a factor of 0.9/0.3 = 3 to use an effective edge length of about 0.9 mm for the computations:
+
+```matlab
+c = cobiveco(struct('inPrefix','heart', 'outPrefix','result/', 'mmgSizingParam',3*[0.1 0.9 1.1]));
+```
+
 ## License
 
 All source code is subject to the terms of the Apache License 2.0.  
