@@ -1,5 +1,5 @@
 # Cobiveco
-**Co**nsistent **bive**ntricular **co**ordinates (https://arxiv.org/abs/2102.02898)
+**Co**nsistent **bive**ntricular **co**ordinates (https://doi.org/10.1016/j.media.2021.102247 / https://arxiv.org/abs/2102.02898)
 
 ![Coordinates](https://user-images.githubusercontent.com/31965820/103575830-8bc56400-4ed2-11eb-913d-1bc1c338622d.png)
 
@@ -66,6 +66,7 @@ Karlsruhe Institute of Technology
 www.ibt.kit.edu
 
 ## References
+[Schuler, S., Pilia, N., Potyagaylo, D., Loewe, A., 2021. Cobiveco: Consistent biventricular coordinates for precise and intuitive description of position in the heart – with MATLAB implementation. Medical Image Analysis.](https://doi.org/10.1016/j.media.2021.102247)
 
 <a id="1">[1]</a> [Dapogny, C. et al., 2014. Three-dimensional adaptive domain remeshing, implicit domain meshing, and applications to free and moving boundary problems. J Comput Phys.](https://github.com/MmgTools/mmg)  
 <a id="2">[2]</a> [Jacobson, A., 2018. gptoolbox: Geometry processing toolbox.](https://github.com/alecjacobson/gptoolbox)  
