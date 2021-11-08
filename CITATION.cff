@@ -1,5 +1,6 @@
 cff-version: 1.2.0
 title: Cobiveco
+message: "Please cite this software using the metadata from 'preferred-citation'."
 type: software
 authors:
   - given-names: Steffen
