@@ -1,15 +1,31 @@
 function computeHeartAxesAndApex(o)
 
+% Computes the axes (Long, Left-Right, Anterior-Posterior) in order to find
+% the location of the apex (point) of the object.
+%
+% computeHeartAxesAndApex(o)
+%
+% Input:
+%   o: instance of the class cobiveco
+%
+% Outputs:
+%   o.R, object of class cobiveco [double, size 4x4] (For details see cobiveco class documentation)
+%   o.antPostAx, object of class cobiveco [double, size 1x3] (For details see cobiveco class documentation)
+%   o.longAx, object of class cobiveco [double, size 1x3] (For details see cobiveco class documentation)
+%   o.leftRightAx, object of class cobiveco [double, size 1x3] (For details see cobiveco class documentation)
+%   ind4: apex point as part of the pApexCurveProj (curve projection) [logical]
+
 if ~o.available.mesh1
     o.prepareMesh1;
 end
 o.printStatus('Computing heart axes and apex point...');
 t = toc;
 
-% point ids (wrt o.m1.vol) of septal surface and septal curve on epicaridum
-idsEpi = o.m1.surToVol(o.m1.sur.pointData.class==2);
+% Declare Epicardium
+idsEpi = o.m1.surToVol(o.m1.sur.pointData.class == 2);
+
 ucl = unique(o.m1.vol.cellData.class);
-idsSeptSur = intersect(o.m1.vol.cells(o.m1.vol.cellData.class==ucl(1),:), o.m1.vol.cells(o.m1.vol.cellData.class==ucl(2),:));
+idsSeptSur = intersect(o.m1.vol.cells(o.m1.vol.cellData.class == ucl(1),:), o.m1.vol.cells(o.m1.vol.cellData.class == ucl(2),:));
 idsSeptCurve = intersect(idsEpi, idsSeptSur);
 
 % septCurve: line segments of septal curve, extracted from o.m1.sur
@@ -22,16 +38,20 @@ cSeptCurve = unique(reshape(cSeptCurve(ind),2,[])', 'rows');
 cSeptCurve = changem(cSeptCurve, 1:numel(idsSeptCurveSur), idsSeptCurveSur);
 septCurve = vtkCreateStruct(pSeptCurve, cSeptCurve);
 
-% lvCenter: center of LV endocardium 
+% lvCenter: center of LV endocardium
 endoLv = vtkDataSetSurfaceFilter(vtkThreshold(o.m1.sur, 'points', 'class', [3 3]));
 lvCenter = vtkCenterOfArea(endoLv);
 
-% rvCenter: center of RV endocardium 
+% rvCenter: center of RV endocardium
 endoRv = vtkDataSetSurfaceFilter(vtkThreshold(o.m1.sur, 'points', 'class', [4 4]));
 rvCenter = vtkCenterOfArea(endoRv);
 
 % point coords of base
-pBase = double(o.m1.sur.points(o.m1.sur.pointData.class==1,:));
+if o.cfg.CobivecoX == true
+    pBase = double(o.m1.sur.points((o.m1.sur.pointData.class == 5|o.m1.sur.pointData.class == 6),:));
+else
+    pBase = double(o.m1.sur.points(o.m1.sur.pointData.class==1,:));
+end
 
 % longAx: vector that is on average most orthogonal to the surface normals of the LV endocardium
 longAx = computeLongAxis(endoLv, lvCenter-mean(pBase,1));
@@ -57,7 +77,15 @@ septVec = sign(d) * septVec;
 % antPostVec: vector pointing from anterior to posterior
 antPostVec = cross(longAx, septVec);
 d = (centroidsSeptSur - repmat(lvCenter, size(centroidsSeptSur,1), 1)) * antPostVec';
-maskSeptSur = d > prctile(d,o.cfg.truncSeptSur(1)) & d < prctile(d,100-o.cfg.truncSeptSur(2));
+
+if o.cfg.CobivecoX == true
+    % Apex Base vector for defining an area close to the base of the septal surface
+    dLongAxes = (centroidsSeptSur - repmat(lvCenter, size(centroidsSeptSur,1), 1)) * longAx';
+    maskSeptSur =  d > prctile(d,o.cfg.truncSeptSur(1)) & d < prctile(d,100-o.cfg.truncSeptSur(2)) & dLongAxes > prctile(dLongAxes, o.cfg.truncSeptSur(3));
+    disp('Cutting Edge');
+else
+    maskSeptSur = d > prctile(d,o.cfg.truncSeptSur(1)) & d < prctile(d,100-o.cfg.truncSeptSur(2));
+end
 
 % truncSeptCenter: center of truncated septal surface
 centroidsTruncSept = centroidsSeptSur(maskSeptSur,:);
@@ -76,6 +104,11 @@ leftRightAx = leftRightAx - leftRightAx*(longAx'*longAx);
 
 % antPostAx: vector pointing from anterior to posterior,
 antPostAx = cross(longAx, leftRightAx);
+if o.cfg.CobivecoX == true
+    o.antPostAx = antPostAx;
+    o.longAx = longAx;
+    o.leftRightAx = leftRightAx;
+end
 
 % center: global center point,
 % determined by projecting lvCenter onto the truncated septal surface
@@ -84,6 +117,7 @@ center = lvCenter + d .* leftRightAx;
 
 % pApexCurve: points of septal curve below the center point
 d = (pSeptCurve - repmat(center, size(pSeptCurve,1), 1)) * longAx';
+% points larger distance should be below center point
 ind1 = find(d>0);
 pApexCurve = pSeptCurve(ind1,:);
 
@@ -93,6 +127,7 @@ d = (repmat(center, size(pApexCurve,1), 1) - pApexCurve) * longAx';
 pApexCurveProj = pApexCurve + d .* repmat(longAx, size(pApexCurve,1), 1);
 dist = sqrt(sum((pApexCurveProj - center).^2, 2));
 [~,ind2] = min(dist);
+
 
 % split septCurve at apex point into anterior and posterior part
 ind3 = ind1(ind2);
@@ -104,13 +139,12 @@ septCurveSplit = vtkConnectivityFilter(septCurveSplit);
 isovals = double(unique(septCurveSplit.cellData.RegionId));
 numCellsPerRegion = NaN(size(isovals));
 for i = 1:numel(isovals)
-    numCellsPerRegion(i) = numel(find(septCurveSplit.cellData.RegionId==isovals(i)));
+    numCellsPerRegion(i) = numel(find(septCurveSplit.cellData.RegionId == isovals(i)));
 end
 [~,ind5] = sort(numCellsPerRegion, 'descend');
 isovals = isovals(ind5(1:2));
 o.septCurveAnt = vtkDeleteDataArrays(vtkThreshold(septCurveSplit, 'cells', 'RegionId', [isovals(1) isovals(1)]));
 o.septCurvePost = vtkDeleteDataArrays(vtkThreshold(septCurveSplit, 'cells', 'RegionId', [isovals(2) isovals(2)]));
-% make sure o.septCurveAnt and o.septCurvePost are not interchanged
 if (mean(o.septCurvePost.points,1)-center)*antPostAx' < 0
     tmp = o.septCurveAnt;
     o.septCurveAnt = o.septCurvePost;
@@ -128,19 +162,20 @@ o.R = R3*R2*R1;
 if o.cfg.exportLevel > 2
     vtkWrite(o.septCurveAnt, sprintf('%sseptCurveAnt.vtp', o.cfg.outPrefix));
     vtkWrite(o.septCurvePost, sprintf('%sseptCurvePost.vtp', o.cfg.outPrefix));
-    
+
     cSeptSurTrunc = cSeptSur(maskSeptSur,:);
     pSeptSurTrunc = pSeptSur(unique(cSeptSurTrunc),:);
     cSeptSurTrunc = changem(cSeptSurTrunc, 1:size(pSeptSurTrunc,1), unique(cSeptSurTrunc));
     vtkWrite(vtkCreateStruct(pSeptSurTrunc, cSeptSurTrunc), sprintf('%sseptSurfaceTrunc.vtp', o.cfg.outPrefix));
-    
+
     d = norm(center-lvCenter);
-    axes.points = [center; center-d*leftRightAx; center+2.5*d*longAx; center+2*d*antPostAx];
+    axes.points = [center; center-d*leftRightAx; center+d*longAx; center+d*antPostAx];
     axes.cells = int32([1 2; 1 3; 1 4]);
     axes.cellTypes = uint8([3; 3; 3]);
     axes.cellData.axis = uint8([1; 2; 3]);
-    vtkWrite(axes, sprintf('%saxes.vtp', o.cfg.outPrefix));
+    vtkWrite(axes, sprintf('%sglobalHeartAxes.vtp', o.cfg.outPrefix));
 end
+
 
 o.printStatus(sprintf('%.1f seconds\n', toc-t), true);
 o.available.heartAxesAndApex = true;

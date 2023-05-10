@@ -1,10 +1,13 @@
 function u = solveLaplace(L, boundaryIds, boundaryVal, tol, maxit)
 % Computes the solution u of the Laplace equation L*u = 0
-% with boundary conditions u(boundaryIds) = boundaryVal.
+% with boundary conditions u(boundaryIds) = boundaryVal. 
+%
+% The Biconjugate Gradients Stabilized Method (bicgstab) is used.
 %
 % u = solveLaplace(L, boundaryIds, boundaryVal, tol, maxit)
 %
 % Inputs:
+%
 %   L: Laplacian matrix computed with cotmatrix() of gptoolbox [numPoints x numPoints]
 %   boundaryIds: point IDs for Dirichlet boundary conditions [numBoundaryPoints x 1]
 %   boundaryVal: values for Dirichlet boundary conditions [numBoundaryPoints x 1]
@@ -12,6 +15,7 @@ function u = solveLaplace(L, boundaryIds, boundaryVal, tol, maxit)
 %   maxit: maximum number of iterations for bicgstab
 %
 % Outputs:
+%
 %   u: Laplace solution [numPoints x 1]
 %
 % Written by Steffen Schuler, Institute of Biomedical Engineering, KIT

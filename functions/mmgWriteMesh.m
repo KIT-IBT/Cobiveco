@@ -1,5 +1,11 @@
 function mmgWriteMesh(mesh, filename)
 
+% mmgWriteMesh(mesh, filename)
+% 
+% Uses mmg meshing Software 
+% (for more infos, see https://www.mmgtools.org/)
+
+
 fid = fopen(filename, 'w');
 if ~fid
     error('Could not open %s for writing.', filename);

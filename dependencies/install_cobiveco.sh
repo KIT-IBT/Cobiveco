@@ -33,3 +33,11 @@ else
 	make -j
 	cd ../..
 fi
+
+echo -e "\n========== Installing condalab ==========\n"
+if [[ -d "condalab" ]]
+then
+	echo "The directory 'condalab' already exists. Remove it to reinstall."
+else
+	git clone https://github.com/diogoflduarte/condalab.git
+fi

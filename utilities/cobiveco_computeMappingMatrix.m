@@ -45,6 +45,51 @@ if ~isfield(target.pointData, 'rtSin') || ~isfield(target.pointData, 'rtCos')
     target.pointData.rtCos = cos(2*pi*target.pointData.rt);
 end
 
+% check for negative numbers in ab
+% to avoid complex number by taking the root of a negative number
+% find the nearest neighbour with an actual value
+% if more than two mistakes,report error and break
+if any(source.pointData.ab<0)
+    warning('There is at least one negative coordinate. finding nearest neighbor value.')
+    id_negative = find(source.pointData.ab<0);
+    id_nonnegative = find(source.pointData.ab >= 0);
+    if size(id_negative)+size(id_nonnegative) ~= size(source.pointData.ab)
+        error("Oops. These numbers do not add up. Do you think you have valid ab coordinates?");
+    elseif size(id_negative) > 3
+        error("You have more than three negative values. Consider checking your calculations.");
+    end
+
+    neighboringIDs = knnsearch(source.points(id_nonnegative,:), source.points(id_negative,:));
+    for i = 1:size(id_negative,1)
+        ids_bigger_than_current = neighboringIDs > id_negative(i);
+        remove_from_match = sum(ids_bigger_than_current(:)>0);
+        valid_new_id = neighboringIDs(i) - remove_from_match;
+        source.pointData.ab(id_negative(i)) = source.pointData.ab(valid_new_id);
+    end
+end
+
+% to avoid complex number by taking the root of a negative number
+% find the nearest neighbour with an actual value
+% if more than two mistakes,report error and break
+if any(target.pointData.ab<0)
+    warning('There is at least one negative coordinate. finding nearest neighbor value.')
+    id_negative = find(target.pointData.ab<0);
+    id_nonnegative = find(target.pointData.ab >= 0);
+    if size(id_negative)+size(id_nonnegative) ~= size(target.pointData.ab)
+        error("Oops. These numbers do not add up. Do you think you have valid ab coordinates?");
+    elseif size(id_negative) > 3
+        error("You have more than three negative values. Consider checking your calculations.");
+    end
+
+    neighboringIDs = knnsearch(target.points(id_nonnegative,:), target.points(id_negative,:));
+    for i = 1:size(id_negative,1)
+        ids_bigger_than_current = neighboringIDs > id_negative(i);
+        remove_from_match = sum(ids_bigger_than_current(:)>0);
+        valid_new_id = neighboringIDs(i) - remove_from_match;
+        target.pointData.ab(id_negative(i)) = target.pointData.ab(valid_new_id);
+    end
+end
+
 %% Scale ventricular coords to have a similar change across one tet.
 
 if verbose, tic; fprintf('Scaling coordinates...                 '); end
@@ -52,14 +97,14 @@ if verbose, tic; fprintf('Scaling coordinates...                 '); end
 tv_cells = round(source.pointData.tv(source.cells));
 tv_norm = mean(vtkEdgeLengths(source)) / norm(max(source.points,[],1)-min(source.points,[],1));
 
-ab_cells = source.pointData.ab(source.cells);
-ab_norm = median(max(ab_cells,[],2) - min(ab_cells,[],2));
-
 rtSin_cells = source.pointData.rtSin(source.cells);
 rtSin_norm = median(max(rtSin_cells,[],2) - min(rtSin_cells,[],2));
 
 rtCos_cells = source.pointData.rtCos(source.cells);
 rtCos_norm = median(max(rtCos_cells,[],2) - min(rtCos_cells,[],2));
+
+ab_cells = source.pointData.ab(source.cells);
+ab_norm = median(max(ab_cells,[],2) - min(ab_cells,[],2));
 
 tm_cells = source.pointData.tm(source.cells);
 tm_norm = median(max(tm_cells,[],2) - min(tm_cells,[],2));
@@ -87,7 +132,8 @@ if strcmp(method, 'linear')
     X(:,3) = mean(rtSin_cells,2) / rtSin_norm .* sqrt(mean(ab_cells,2));
     X(:,4) = mean(rtCos_cells,2) / rtCos_norm .* sqrt(mean(ab_cells,2));
     X(:,5) = mean(tm_cells,2) / tm_norm;
-
+    
+    
     Y = NaN(numTarPoints, 5);
     Y(:,1) = round(target.pointData.tv) / tv_norm;
     Y(:,2) = target.pointData.ab / ab_norm;
@@ -96,6 +142,7 @@ if strcmp(method, 'linear')
     Y(:,5) = target.pointData.tm / tm_norm;
 
     Mdl1 = KDTreeSearcher(X);
+    
     pointIds = knnsearch(Mdl1, Y);
 
     if verbose, fprintf('%.1f seconds\n', toc); end

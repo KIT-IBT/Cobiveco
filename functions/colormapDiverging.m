@@ -1,5 +1,5 @@
 function[map] = colormapDiverging(s,rgb1,rgb2)
-% This function is based on Kenneth Moreland's code for greating Diverging Colormaps.
+% This function is based on Kenneth Moreland's code for creating Diverging Colormaps.
 % Created by Andy Stein.
 % See https://www.kennethmoreland.com/color-maps/, DOI: 10.1007/978-3-642-10520-3_9
 %

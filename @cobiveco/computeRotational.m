@@ -1,5 +1,20 @@
 function computeRotational(o)
 
+% Computes the rotational coordinates of the object,
+% i.e. the trajectory distance from posterior to anterior and back to posterior.
+% The coordinate values are added in the fields "rt", "rtSin" and "rtCos" to the output objects.
+%
+% computeRotational(o)
+%
+% Input: 
+%   o: instance of the class cobiveco
+% 
+% Output: 
+%   o.m0, object of class cobiveco [struct] (For details see cobiveco class documentation)
+%   o.m2, object of class cobiveco [struct] (For details see cobiveco class documentation)
+
+
+
 if ~o.available.heartAxesAndApex
     o.computeHeartAxesAndApex;
 end

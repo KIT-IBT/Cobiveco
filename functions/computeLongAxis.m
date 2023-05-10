@@ -3,7 +3,7 @@ function longAx = computeLongAxis(sur, directionVec)
 % with the surface normals of the LV endocardium, i.e. the vector that is
 % "most orthogonal" to the surface normals.
 %
-% longAx = computeLongAxis(sur, basePoints)
+% longAx = computeLongAxis(sur, directionVec)
 %
 % Inputs:
 %   sur: LV endocardial surface as VTK struct

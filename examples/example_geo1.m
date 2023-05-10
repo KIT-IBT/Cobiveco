@@ -20,7 +20,13 @@ c = cobiveco(struct('inPrefix','geo1/heart', 'outPrefix','result_geo1/', 'export
 
 %% Compute coordinates and retrieve config and results
 
-c.computeAll;
+% prepareMesh0 decides on which Cobiveco version to be used
+c.prepareMesh0;
+if c.cfg.CobivecoX == true
+    c.computeAllCobivecoX;
+else 
+    c.computeAllCobiveco;
+end
 config = c.cfg;
 result = c.result;
 R = c.R;

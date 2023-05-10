@@ -1,5 +1,17 @@
 function prepareMesh1(o)
 
+% Remeshing step to ensure that no elements are shared over the boundary between left and
+% right ventricles.
+% The outputs are added in the fields "sur", "surToVol", "meanEdgLen", "L", "G" "massMat" and "M" of the output object.
+%
+% prepareMesh1(o)
+%
+% Input:
+%   o: instance of the class cobiveco
+%
+% Outputs:
+%   o.m1, object of class cobiveco [struct] (For details see cobiveco class documentation)
+
 if ~o.available.transventricular
     o.computeTransventricular;
 end
@@ -40,6 +52,7 @@ o.m1.meanEdgLen = mean(vtkEdgeLengths(o.m1.vol));
 P1 = double(o.m1.vol.points);
 C1 = double(o.m1.vol.cells);
 o.m1.L = cotmatrix(P1, C1);
+%Gradient
 o.m1.G = grad(P1, C1);
 o.m1.massMat = massmatrix(P1, C1, 'voronoi');
 o.m1.M = baryInterpMat(P1, C1, o.m0.vol.points);

@@ -5,6 +5,7 @@ function T = normalizedGradField(G, u, thresh, warn, P, C)
 % T = normalizedGradField(G, u, thresh, warn, P, C)
 %
 % Inputs:
+%
 %   G: gradient operator matrix computed with grad() of gptoolbox [3*numCells x numPoints]
 %   u: scalar field [numPoints x 1]
 %   thresh: threshold on the gradient length to avoid division by zero during normalization

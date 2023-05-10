@@ -1,4 +1,9 @@
 function mesh = mmgReadMesh(filename)
+%
+% mesh = mmgReadMesh(filename)
+%
+% Uses mmg meshing Software 
+% (for more infos, see https://www.mmgtools.org/)
 
 fid = fopen(filename, 'r');
 if ~fid

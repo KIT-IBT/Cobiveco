@@ -1,5 +1,16 @@
 function prepareMesh2(o)
 
+% Performs the second remeshing step to extract the ridge surface of the object.  
+% The values are added to the fields "sur", "surToVol", "L", "G" and "M" of the output object.
+%
+% prepareMesh2(o)
+%
+% Input:
+%   o: instance of the class cobiveco
+%
+% Output:
+%   o.m2, object of class cobiveco [struct] (For details see cobiveco class documentation)
+
 if ~o.available.transmural
     o.computeTransmural;
 end
