@@ -1,0 +1,7 @@
+networkx
+numpy
+pandas
+
+# these are optional (only used for notebooks)
+jupyter
+matplotlib

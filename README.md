@@ -50,7 +50,7 @@ Alternatively, `addons = matlab.addons.installedAddons` shows a list of all inst
    If the files ``mmg2d_O3, mmg3d_O3, mmgs_O3`` are present, you can go on to the next step. Else perform download the mmg binary from [here](https://www.mmgtools.org/mmg-remesher-downloads) and move ``mmg2d_O3, mmg3d_O3, mmgs_O3`` to ``dependencies/mmg/build/bin``.
 
    When running any example later, a warning about unidentified developer may occur. This can be solved by editing the setting as descibed [here](https://support.apple.com/en-us/HT202491).
-5. Paraview will be used during the calculation od the coordinates and is highly recommended for visualization. Install Paraview. You can download Paraview [here](https://www.paraview.org/download/) (recommended on Mac: ParaView-5.11.0-RC1-MPI-OSX10.13-Python3.9-x86_64.dmg). The installation was tested was Paraview 5.10 and 5.11 .
+5. Paraview will be used during the calculation of the coordinates and is highly recommended for visualization. Install Paraview. You can download Paraview [here](https://www.paraview.org/download/) (recommended on Mac: ParaView-5.11.0-RC1-MPI-OSX10.13-Python3.9-x86_64.dmg). The installation was tested was Paraview 5.10 and 5.11 .
 6. Check that ``pvpython`` can be evoked from the commandline. If not, add the path to your ``~/.zshrc``.
    First, check where ``pvpython`` is located.
 
@@ -61,7 +61,7 @@ Alternatively, `addons = matlab.addons.installedAddons` shows a list of all inst
    The output will look something like this:
 
    ```
-   /Applications/ParaView-5.10.1.app/Contents/bin//pvpython
+   /Applications/ParaView-5.10.1.app/Contents/bin/pvpython
    ```
 
    Modify the following commands to represent your path. Then, add pvpython to your `` ~/.zshrc`` using your favorite editor or just by doing:
@@ -70,9 +70,21 @@ Alternatively, `addons = matlab.addons.installedAddons` shows a list of all inst
    $ echo "export PATH="$PATH:/Applications/ParaView-5.10.1.app/Contents/bin/"" >> ~/.zshrc
    $ ln -s /Applications/ParaView-5.10.0.app/Contents/bin/pvpython ~/bin
    ```
-7. Install Anaconda using [this guide](https://docs.anaconda.com/anaconda/ install/mac-os/) (commandline-installation recommended).
-   This [guide for conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html) might also be useful if the is user not familiar with it.Before going on it is suggested to reboot the terminal to have conda running.
-8. Create a conda enviroment called base using the  ``cobivecox.yml. ``
+7. To switch between environments in Matlab, we recommend using conda. However, one can also create a python environment using the ``requirements.txt`` file, which is more light-weight, than choosing anaconda. However, one should be aware, that you can switch between calling ``pvpython`` and ``python`` and might need to modify the execution of condalab in the matlab code. See step 9 below.
+
+To create a python environment one can simply execute the following:
+   ```
+   pip install -r requirements.txt
+   ```
+or use conda to create a minimal environment
+   ```
+   conda install --file requirements.txt
+   ```
+
+The tested and recommended version of this code is currently using anaconda. You can install Anaconda using [this guide](https://docs.anaconda.com/anaconda/ install/mac-os/) (commandline-installation recommended).
+   This [guide for conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html) might also be useful if the is user not familiar with it.
+
+8. Create a conda environment called base using the  ``cobivecox.yml. ``
 
    You can use the following command to create the python environment with the dependencies needed:
 
