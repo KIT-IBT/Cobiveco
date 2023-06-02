@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+title: Cobiveco
+message: "Please cite this software using the metadata from 'preferred-citation'."
+type: software
+authors:
+  - given-names: Steffen
+    family-names: Schuler
+    email: steffen.schuler@kit.edu
+    affiliation: Karlsruhe Institute of Technology (KIT)
+    orcid: https://orcid.org/0000-0001-6515-3807
+  - given-names: Axel
+    family-names: Loewe
+    email: axel.loewe@kit.edu
+    affiliation: Karlsruhe Institute of Technology (KIT)
+    orcid: https://orcid.org/0000-0002-2487-4744
+license: Apache-2.0
+repository-code: https://github.com/KIT-IBT/Cobiveco
+preferred-citation:
+  type: article
+  title: "Cobiveco: Consistent biventricular coordinates for precise and intuitive description of position in the heart – with MATLAB implementation" 
+  authors:
+    - family-names: Schuler
+      given-names: Steffen
+    - family-names: Pilia
+      given-names: Nicolas
+    - family-names: Potyagaylo
+      given-names: Danila
+    - family-names: Loewe
+      given-names: Axel
+  doi: 10.1016/j.media.2021.102247
+  journal: Medical Image Analysis
+  year: 2021
+  volume: 74
+  pages: 102247
