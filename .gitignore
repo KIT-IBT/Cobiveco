@@ -27,14 +27,6 @@ __pycache__/
 examples/result*
 gptoolbox/
 mmg/
-numerical-tours/
-quick_guide_tofile_types_andCobiveco.md
-examples/example_cap1_coarser.m
-examples/example_cap1_coarser_clean.m
-examples/example_cap1_ctrl.m
-examples/example_cap1_fine.mß
-examples/example_gmsh.m
-examples/example_gmsh_split.m
 vtkToolbox/
 test_1
 test_rot.m
