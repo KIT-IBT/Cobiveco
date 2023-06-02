@@ -232,7 +232,7 @@ Copyright 2021 Steffen Schuler, Karlsruhe Institute of Technology.
 
 Lisa Pankewitz
 Simula Research Laboratory
-www.simula.no
+lisa@simula.no / www.simula.no
 
 Steffen Schuler & Axel Loewe
 Institute of Biomedical Engineering
