@@ -24,11 +24,6 @@ __pycache__/
 *.nod
 *.pts
 *.pvsm
-@cobiveco/computeHeartAxesAndApex_original_septal_curve.m
-@cobiveco/Heart20220124.m
-20210323_cobiveco_python.md
-20210330_cobiveco_python_update.md
-20210624_project_1_team_meeting.md
 examples/result*
 gptoolbox/
 matlab.mat
