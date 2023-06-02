@@ -1,7 +1,24 @@
 function [x,flag,iter] = secant(fun, x1, x2, tol, maxit)
 
+% Performs the secant method to find the root of a given function
+%
+% [x,flag,iter] = secant(fun, x1, x2, tol, maxit)
+%
+% Inputs:
+%
+%   fun: a function
+%   x1, x2: the initial values
+%   tol: tolerance
+%   maxit: the maximal number of iterations permitted
+%
+% Outputs:
+%
+%   x: the computed root
+%   flag: the flags
+%   iter: the number of performed iterations 
+
 if nargin < 5
-    maxit = 100;
+    maxit = 300;
 end
 
 f1 = fun(x1);

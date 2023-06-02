@@ -6,6 +6,7 @@ function d = solveTrajectDist(G, T, boundaryIds, boundaryVal, tol, maxit)
 % d = solveTrajectDist(G, T, boundaryIds, boundaryVal, tol, maxit)
 %
 % Inputs:
+%
 %   G: gradient operator matrix computed with grad() of gptoolbox [3*numCells x numPoints]
 %   T: normalized tangent field defining the course of trajectories [numCells x 3]
 %   boundaryIds: point IDs for Dirichlet boundary conditions [numBoundaryPoints x 1]
@@ -14,6 +15,7 @@ function d = solveTrajectDist(G, T, boundaryIds, boundaryVal, tol, maxit)
 %   maxit: maximum number of iterations for minres
 %
 % Outputs:
+%
 %   d: distance along trajectories (starting from boundaryIds with boundaryVal) [numPoints x 1]
 %
 % Written by Steffen Schuler, Institute of Biomedical Engineering, KIT
@@ -67,10 +69,20 @@ A = A(p,p);
 b = b(p);
 
 icMat = ichol_autocomp(A);
-[x, flag, relres, iter] = minres(A, b, tol, maxit, icMat, icMat');
-if flag
-    warning('minres failed at iteration %i with flag %i and relative residual %.1e.', iter, flag, relres);
+numTries = 1;
+for i = 1:numTries
+    [x, flag, relres, iter] = minres(A, b, tol, maxit, icMat, icMat');
+    if flag
+        warning('minres failed at iteration %i with flag %i and relative residual %.1e.', iter, flag, relres);
+        if i < numTries
+            warning('Trying a slightly bigger tolerance.');
+            tol = 1.75 * tol;
+        else
+            warning('minres failed after trying %i different tolerances (last tol = %d)',numTries,tol);
+        end
+    end
 end
+
 d = NaN(N,1);
 d(p) = x;
 

@@ -15,6 +15,7 @@ vtkWrite(debug, 'geo3/debug1.vtp');
 %% Adjust baseNormal and baseOrigin, if needed
 
 baseShift = -7;
+%baseShift = -15;
 baseOrigin = baseOrigin + baseShift*baseNormal;
 
 %% Clip mesh at the basal plane
@@ -31,17 +32,17 @@ numSubdiv = 2; % can help for coarse meshes (interpolation of face normals)
 vtkWrite(debug, 'geo3/debug3.vtp');
 
 %% Remove bridges
-
+%keyboard
 [vol,debug,mmgOutput] = cobiveco_removeBridges(vol, sur, baseNormal, 'rv', true);
 vtkWrite(debug, 'geo3/debug4.vtp');
 
 %% Recreate surface classes
-
+%keyboard
 sur = vtkDataSetSurfaceFilter(vol);
 [sur,debug] = cobiveco_createClasses(sur, baseNormal, maxAngle, numSubdiv);
 vtkWrite(debug, 'geo3/debug5.vtp');
 
 %% Write result
 
-vtkWrite(sur, 'geo3/heart.vtp');
-vtkWrite(vol, 'geo3/heart.vtu');
+vtkWrite(sur, 'geo3/test_clipping_heart.vtp');
+vtkWrite(vol, 'geo3/test_clipping_heart.vtu');

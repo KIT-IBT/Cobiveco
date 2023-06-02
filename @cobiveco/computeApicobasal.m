@@ -1,5 +1,21 @@
 function computeApicobasal(o)
 
+% Computes the apicobasal coordinate on the given object,
+% i.e. the coordinate describing the distance travelled from apex (0) to base (1).
+% The coordinate value is added in the field "ab" to the output objects.
+%
+% computeApicobasal(o)
+%
+% Input:
+%   o: instance of the class cobiveco
+% 
+% Outputs: 
+%   o.m1, object of class cobiveco [struct] (For details see cobiveco class documentation)
+%   o.m0, object of class cobiveco [struct] (For details see cobiveco class documentation)
+%  
+%  
+
+
 if ~o.available.rotational
     o.computeRotational;
 end

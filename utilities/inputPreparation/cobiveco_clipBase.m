@@ -1,7 +1,9 @@
 function [vol,mmgOutput] = cobiveco_clipBase(vol, baseNormal, baseOrigin)
-
+%vol_in = vol;
 baseHeight = baseOrigin(:)'*baseNormal(:);
 height = vol.points*baseNormal(:)-baseHeight;
+
+%keyboard;
 
 meanEdgLen = mean(vtkEdgeLengths(vol));
 mmgSizingParam = [0.1 0.9 1.1];
@@ -10,10 +12,12 @@ isovalue = 0;
 numTries = 5;
 for i = 1:numTries
     [vol,mmgStatus,mmgOutput] = mmg(vol, height, sprintf('-ls %1.5e -nr -hausd %1.5e -hmin %1.5e -hmax %1.5e', isovalue, mmgSizingParam(:)'*meanEdgLen));
+    %keyboard
     if mmgStatus == 0
         break;
     elseif i < numTries
         warning('Mmg remeshing with an isovalue of %.3f failed (system command status %i). Trying again with a slightly larger isovalue.', isovalue, mmgStatus);
+        %keyboard
         isovalue = isovalue + 0.1*prctile(max(height(vol.cells),[],2)-min(height(vol.cells),[],2),95);
         mmgSizingParam(1) = 0.8*mmgSizingParam(1);
     else

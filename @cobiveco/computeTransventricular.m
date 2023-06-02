@@ -1,5 +1,18 @@
 function computeTransventricular(o)
 
+% Computes the transventricular coordinate of the elements in the object, 
+% i.e. it indicates if the element belongs to the left (0) or right (1) ventricle.
+% The coordinate value is added in the field "tv" to the output objects.
+% 
+% computeTransventricular(o)
+%
+% Input: 
+%   o: instance of the class cobiveco
+% 
+% Output: 
+%   o.m0, object of class cobiveco [struct] (For details see cobiveco class documentation)
+
+
 if ~o.available.mesh0
     o.prepareMesh0;
 end
