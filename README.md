@@ -1,4 +1,4 @@
-# CobivecoX
+# Cobiveco v1.1 (CobivecoX)
 
 **Co**nsistent **bive**ntricular **co**ordinates (https://doi.org/10.1016/j.media.2021.102247 / https://arxiv.org/abs/2102.02898)
 
