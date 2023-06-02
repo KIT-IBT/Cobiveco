@@ -26,9 +26,6 @@ __pycache__/
 *.pvsm
 examples/result*
 gptoolbox/
-matlab.mat
-matlab_saga.md
-map_fd/
 mmg/
 numerical-tours/
 quick_guide_tofile_types_andCobiveco.md
