@@ -237,7 +237,7 @@ lisa@simula.no / www.simula.no
 Steffen Schuler & Axel Loewe
 Institute of Biomedical Engineering
 Karlsruhe Institute of Technology
-www.ibt.kit.edu
+axel.loewe@kit.edu / www.ibt.kit.edu
 
 ## References
 [Schuler, S., Pilia, N., Potyagaylo, D., Loewe, A., 2021. Cobiveco: Consistent biventricular coordinates for precise and intuitive description of position in the heart – with MATLAB implementation. Medical Image Analysis.](https://doi.org/10.1016/j.media.2021.102247)
