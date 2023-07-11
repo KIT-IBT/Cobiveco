@@ -128,6 +128,7 @@ The tested and recommended version of this code is currently using anaconda. You
 ## Dependencies
 
 Before using Cobiveco, its dependencies [[1](#1),[2](#2),[3](#3)] need to be installed by running [dependencies/install_cobiveco.sh](dependencies/install_cobiveco.sh).
+Note that this script was tested on MacOS.
 
 ## Usage
 

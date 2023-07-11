@@ -403,8 +403,14 @@ classdef cobiveco < handle
             addpath([mpath '/../functions']);
             addpath('../utilities');
             addpath('../utilities/inputPreparation');
-            if ~exist([mpath '/../dependencies/mmg/build/bin/mmg3d_O3'], 'file')
-                error('Dependency ''mmg'' not found. Run dependencies/install_cobiveco.sh to install.');
+            if ispc
+                if ~exist([mpath '/../dependencies/mmg/build/bin/mmg3d_O3.exe'], 'file')
+                    error('Dependency ''mmg'' not found. Run dependencies/install_cobiveco.sh to install.');
+                end
+            else
+                if ~exist([mpath '/../dependencies/mmg/build/bin/mmg3d_O3'], 'file')
+                    error('Dependency ''mmg'' not found. Run dependencies/install_cobiveco.sh to install.');
+                end
             end
             if ~exist('cotmatrix.m', 'file')
                 if ~exist([mpath '/../dependencies/gptoolbox'], 'dir')

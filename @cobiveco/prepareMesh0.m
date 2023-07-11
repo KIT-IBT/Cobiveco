@@ -28,9 +28,18 @@ vtpFile = sprintf('%s.vtp', o.cfg.inPrefix);
 if exist(vtpFile, 'file')
     % map classes provided in vtp file to surface of volume mesh
     sur = vtkRead(vtpFile);
-    sur.pointData.class(sur.pointData.class>4) = 2;
+    if length(unique(sur.pointData.class)) == 4
+        sur.pointData.class(sur.pointData.class>4) = 2;
+        o.cfg.CobivecoX = false;
+    elseif length(unique(sur.pointData.class)) == 8
+        sur.pointData.class(sur.pointData.class>8) = 2;
+    else
+        error('Error in assigning initial boundary surfaces. Your mesh is labeled with %i surface classes. \n%s', length(unique(sur.pointData.class)), 'For CobivecoX 8 surface labels and for Cobiveco 4 surface labels are required. Please check your .vtp file. Thanks!');
+    end
+    
     ids = vtkMapPointIds(sur, o.m0.sur);
     o.m0.sur.pointData.class = sur.pointData.class(ids);
+
 else
     epiBaseFile = sprintf('%s_epi_base.ply', o.cfg.inPrefix);
     if exist(epiBaseFile, 'file')
