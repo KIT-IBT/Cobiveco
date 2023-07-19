@@ -215,6 +215,10 @@ The following [examples](examples) illustrate the use of Cobiveco:
 * [example_parcellation.m](examples/example_parcellation.m) and [example_extended_parcellation.m](examples/example_extended_parcellation.m): Add a parcellation in four different areas (left anterior, left posterior, right anterior and right posterior) to the given result form cobiveco or cobivecoX respectively.
 * [example_aha_parcellation.m](examples/example_aha_parcellation.m) and [example_extended_aha_parcellation.m](examples/example_extended_aha_parcellation.m): Add a parcellation according to the [AHA 17 segmentation model](https://www.ahajournals.org/doi/10.1161/hc0402.102975) and extending it also to the right ventricle to the given result form cobiveco or cobivecoX respectively.
 
+## Example Data
+
+Example data that is too big too be stored on github can be downloaded from the [zenodo repository](https://doi.org/10.5281/zenodo.7922601).
+
 ## Hints
 
 To speed up the computation for fine meshes (several millions of nodes), we recommend to increase the sizing parameters of Mmg. This way, all coordinates except the binary transventricular coordinate are automatically computed on coarser meshes and interpolated to the original mesh. As the non-binary coordinates are spatially low-frequent, an edge length of slightly below 1 mm (or at maximum one third of the smallest wall thickness) is sufficient.
