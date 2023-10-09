@@ -16,7 +16,7 @@ addpath('..');
 
 %% Create cobiveco object providing only subset of parameters
 
-c = cobiveco(struct('inPrefix','geo1/heart', 'outPrefix','result_geo1/', 'exportLevel',3));
+c = cobiveco(struct('inPrefix','geo1/heart', 'outPrefix','result_geo1/', 'exportLevel',3,'CobivecoX',0));
 
 %% Compute coordinates and retrieve config and results
 
