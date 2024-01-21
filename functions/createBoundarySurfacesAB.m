@@ -20,7 +20,7 @@ function [struct1, struct1FwBoundary, struct1SeptumBoundary] = createBoundarySur
     %
     % Written by Lisa Pankewitz
     % 
-    condaPath = '/Users/lieschen/anaconda3/bin';    % replace this with the path to your conda installation, see README.md
+    condaPath = 'C:\Users\jake\anaconda3';    % replace this with the path to your conda installation, see README.md
     conda.addBaseCondaPath(condaPath)
     % extract surfaces
     struct1.sur= vtkDataSetSurfaceFilter(vtkDeleteDataArrays(struct1.vol));
@@ -242,21 +242,26 @@ function [struct1, struct1FwBoundary, struct1SeptumBoundary] = createBoundarySur
         vtkWrite(struct1SeptumBoundary,sprintf('%sstruct1SeptumBoundaryStartingpoint.vtk', cfg));
         % deactivate conda and use pv python to convert polydata to unstructured grid
         conda.setenv('base')
-        conda.setenv('ldrb')
+        %conda.setenv('ldrb')%What is this??
         conda.deactivate()
 
-
-        commandPvpython = sprintf('pvpython ./../functions/polydata2unstrucgrid.py struct1SeptumBoundary.vtk %sstruct1SeptumBoundary.vtk %sstruct1SeptumBoundaryUnstr.vtk',cfg, cfg)
+        %fixing the pathing issues here
+        cobivecoFunctionsPath = which('createBoundarySurfaceRVLVOnVentricle.m');
+        cobivecoFunctionsPath = cobivecoFunctionsPath(1:strfind(cobivecoFunctionsPath,'createBoundarySurfaceRVLVOnVentricle')-1);
+        commandPvpython = sprintf('pvpython %spolydata2unstrucgrid.py struct1SeptumBoundary.vtk %sstruct1SeptumBoundary.vtk %sstruct1SeptumBoundaryUnstr.vtk',cobivecoFunctionsPath,cfg, cfg);
         [status,cmdout] = system(commandPvpython)
         if status ~= 0
             error('Paraview did not successfully transform polydata to unstructured grid. Need manual handling. Exiting.');
         end
-        % set conda env that has meshio already installed
-        conda.setenv('base')
+        % base conda environment should not need to be activated if set as
+        % default
+        %conda.setenv('base')
         % export as vtk
         commandMeshio = sprintf('meshio convert %sstruct1SeptumBoundaryUnstr.vtk %sstruct1SeptumBoundaryUnstr.ply --ascii', cfg, cfg);
         % call BFS program in python to define extra triangles
-        commandPython = sprintf('python extractExtraTriangles.py %d %sstruct1SeptumBoundaryUnstr.ply %sstructRemovedSeptum ',startingPointSeptum,cfg,cfg);
+        cobivecoExamplesPath = which('extractExtraTriangles.py');
+        cobivecoExamplesPath = cobivecoExamplesPath(1:strfind(cobivecoExamplesPath,'extractExtraTriangles')-1);
+        commandPython = sprintf('python %sextractExtraTriangles.py %d %sstruct1SeptumBoundaryUnstr.ply %sstructRemovedSeptum ',cobivecoExamplesPath,startingPointSeptum,cfg,cfg);
         [status,cmdout] = system(commandMeshio)
         if status ~= 0
             error('Meshio did not succeccfully transform .vtk to .ply. Need manual handling. Exiting.');
