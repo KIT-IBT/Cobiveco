@@ -54,17 +54,6 @@ function computeApicobasalBridges(o)
         neighborsToExclude = intersect(find(fixInds),unique(perNeighborCells(:)));
         PerNeighborValues(ismember(perNeighborCells,neighborsToExclude)) = nan;
         abSept(fixInds) = mean(PerNeighborValues,2,'omitnan');
-        %Barycentric interp from good nodes to bad
-        %need to first clip out bad nodes
-%         perElementKeepMask = ~fixInds(o.m0RvBridge.vol.cells);
-%         keepMask_elements = sum(perElementKeepMask,2) >= 4;
-%         [keepNodeInds,~,reindexVals] = unique(o.m0RvBridge.vol.cells(keepMask_elements,:)');
-%         otherNodeInds = setdiff([1:length(fixInds)],keepNodeInds);
-%         newNodeInds = 1:length(keepNodeInds);
-%         keepElements = o.m0RvBridge.vol.cells(keepMask_elements,:);
-%         clippedElements = reshape(newNodeInds(reindexVals),size(keepElements));
-%         M = baryInterpMat(o.m0RvBridge.vol.points(keepNodeInds,:), clippedElements, o.m0RvBridge.vol.points(otherNodeInds,:));
-%         abSept(otherNodeInds) = M* abSept(keepNodeInds);
     end
 
     o.m0RvBridge.vol.cellData.abGrad = single(abGrad);
@@ -92,6 +81,7 @@ function computeApicobasalBridges(o)
     %fix any outliers
     fixInds = abSept>1.5 | abSept < 0;
     if any(fixInds)
+        warning('Needing to fix some fsw for the LV bridge')
         perNeighborCells = o.m0LvBridge.vol.cells(fixInds,:);
         PerNeighborValues = abSept(perNeighborCells);
         neighborsToExclude = intersect(find(fixInds),unique(perNeighborCells(:)));
