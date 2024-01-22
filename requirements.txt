@@ -1,6 +1,7 @@
 networkx
 numpy
 pandas
+meshio
 
 # these are optional (only used for notebooks)
 jupyter
