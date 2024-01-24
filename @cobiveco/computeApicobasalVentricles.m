@@ -214,8 +214,9 @@ end
 
 o.m1Ventricles.ab = min(max(ab,0),1);
 o.m1Ventricles.debug.pointData.ab = single(o.m1Ventricles.ab);
-vtkWrite(o.m1Ventricles.debug, sprintf('%so.m1VentriclesFinalAb.vtu', o.cfg.outPrefix));
-
+if o.cfg.exportLevel > 2
+    vtkWrite(o.m1Ventricles.debug, sprintf('%so.m1VentriclesFinalAb.vtu', o.cfg.outPrefix));
+end
 
 % interpolate to original mesh
 P2 = double(o.m1Ventricles.vol.points);
