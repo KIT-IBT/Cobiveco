@@ -45,12 +45,6 @@ if ~isfield(target.pointData, 'rtSin') || ~isfield(target.pointData, 'rtCos')
     target.pointData.rtCos = cos(2*pi*target.pointData.rt);
 end
 
-% check for negative numbers in ab
-% to avoid complex number by taking the root of a negative number
-% find the nearest neighbour with an actual value
-% if more than two mistakes,report error and break
-
-
 % Process source.pointData.ab
 sourceAb = source.pointData.ab;
 sourceRt = source.pointData.rt;

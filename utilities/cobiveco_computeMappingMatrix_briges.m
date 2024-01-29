@@ -32,11 +32,6 @@ function M = cobiveco_computeMappingMatrix_briges(source, target, method, search
         method = 'linear';
     end
     
-    % check for negative numbers in ab
-    % to avoid complex number by taking the root of a negative number
-    % find the nearest neighbour with an actual value
-    % if more than two mistakes,report error and break
-    
     source = updateOutliersWithNeighborValues(source);
     target = updateOutliersWithNeighborValues(target);
 
