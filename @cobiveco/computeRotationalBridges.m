@@ -103,8 +103,8 @@ drvbridgePost = solveTrajectDist(o.GrvBridge, rtGrad, idsPostrtrv, zeros(size(id
 drvbridgeAnt = solveTrajectDist(o.GrvBridge, -rtGrad, idsAnttrtrv, zeros(size(idsAnttrtrv)), tolTrajectProj, o.cfg.maxit);
 rtTrajectDistSept = drvbridgePost./(drvbridgeAnt+drvbridgePost);
 
-% Scale PA from 6/7 to 1
-rtSept = 6/7 + 1/7 * (1-rtTrajectDistSept);
+% Scale PA from 1 to 1.5
+rtSept = 1 + 0.5 * (1-rtTrajectDistSept);
 
 o.m0RvBridge.vol.pointData.rtSin = sin(2*pi*rtSept);
 o.m0RvBridge.vol.pointData.rtCos = cos(2*pi*rtSept);
@@ -164,8 +164,8 @@ dlvbridgePost = solveTrajectDist(o.GlvBridge, rtGrad, idsPostrtlv, zeros(size(id
 dlvbridgeAnt = solveTrajectDist(o.GlvBridge, -rtGrad, idsAnttrtlv, zeros(size(idsAnttrtlv)), tolTrajectProj, o.cfg.maxit);
 rtTrajectDistSept = dlvbridgePost./(dlvbridgeAnt+dlvbridgePost);
 
-% Scale PA > 6/7
-rtSept = 6/7 + 1/7 * (1-rtTrajectDistSept);
+% Scale PA > 1
+rtSept = 1 + 0.5 * (1-rtTrajectDistSept);
 
 o.m0LvBridge.vol.pointData.rtSin = sin(2*pi*rtSept);
 o.m0LvBridge.vol.pointData.rtCos = cos(2*pi*rtSept);

@@ -25,7 +25,7 @@ c = cobiveco(struct('inPrefix','meanTOF/meanTOF', 'outPrefix','result_meanTOF/',
 c.prepareMesh0;
 if c.cfg.CobivecoX == true
     c.computeAllCobivecoX;
-else 
+else
     c.computeAllCobiveco;
 end
 config = c.cfg;

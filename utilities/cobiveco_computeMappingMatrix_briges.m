@@ -36,47 +36,10 @@ function M = cobiveco_computeMappingMatrix_briges(source, target, method, search
     % to avoid complex number by taking the root of a negative number
     % find the nearest neighbour with an actual value
     % if more than two mistakes,report error and break
-    if any(source.pointData.ab<0)
-        warning('There is at least one negative coordinate. finding nearest neighbor value.')
-        id_negative = find(source.pointData.ab<0);
-        id_nonnegative = find(source.pointData.ab >= 0);
-        if size(id_negative)+size(id_nonnegative) ~= size(source.pointData.ab)
-            error("Oops. These numbers do not add up. Do you think you have valid ab coordinates?");
-        elseif size(id_negative) > 3
-            error("You have more than three negative values. Consider checking your calculations.");
-        end
     
-        neighboringIDs = knnsearch(source.points(id_nonnegative,:), source.points(id_negative,:));
-        for i = 1:size(id_negative,1)
-            ids_bigger_than_current = neighboringIDs > id_negative(i);
-            remove_from_match = sum(ids_bigger_than_current(:)>0);
-            valid_new_id = neighboringIDs(i) - remove_from_match;
-            source.pointData.ab(id_negative(i)) = source.pointData.ab(valid_new_id);
-        end
-    end
-    
-    % to avoid complex number by taking the root of a negative number
-    % find the nearest neighbour with an actual value
-    % if more than two mistakes,report error and break
-    if any(target.pointData.ab<0)
-        warning('There is at least one negative coordinate. finding nearest neighbor value.')
-        id_negative = find(target.pointData.ab<0);
-        id_nonnegative = find(target.pointData.ab >= 0);
-        if size(id_negative)+size(id_nonnegative) ~= size(target.pointData.ab)
-            error("Oops. These numbers do not add up. Do you think you have valid ab coordinates?");
-        elseif size(id_negative) > 3
-            error("You have more than three negative values. Consider checking your calculations.");
-        end
-    
-        neighboringIDs = knnsearch(target.points(id_nonnegative,:), target.points(id_negative,:));
-        for i = 1:size(id_negative,1)
-            ids_bigger_than_current = neighboringIDs > id_negative(i);
-            remove_from_match = sum(ids_bigger_than_current(:)>0);
-            valid_new_id = neighboringIDs(i) - remove_from_match;
-            target.pointData.ab(id_negative(i)) = target.pointData.ab(valid_new_id);
-        end
-    end
-    
+    source = updateOutliersWithNeighborValues(source);
+    target = updateOutliersWithNeighborValues(target);
+
         
     %% Scale ventricular coords to have a similar change across one tet.
     
