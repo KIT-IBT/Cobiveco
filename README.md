@@ -3,7 +3,7 @@
 **Co**nsistent **bive**ntricular **co**ordinates (https://doi.org/10.1016/j.media.2021.102247 / https://arxiv.org/abs/2102.02898 / https://doi.org/10.1016/j.media.2024.103091)
 
 ### CobivecoX on geometries including the four valve annuli
-![abstract_medima2023_whitebackground](CobivecoX_overview_coordinates.png)
+![abstract_medima2023_whitebackground](https://user-images.githubusercontent.com/51908398/235209955-ebe255e9-03d2-462b-a67d-7cf24192612a.png)
 
 ### Cobiveco 1.0 on geometries with a flat base
 ![Coordinates](https://user-images.githubusercontent.com/31965820/103575830-8bc56400-4ed2-11eb-913d-1bc1c338622d.png)
