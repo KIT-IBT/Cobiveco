@@ -38,17 +38,16 @@ function target = updateOutliersWithNeighborValues(target)
             if length(validNeighbors) >= 3
                 % Calculate the average based on the first, second, and third valid neighbors
                 targetAveragesAb(i) = mean(validNeighbors([1, 2, 3]));
-                disp("work with 3")
 
             elseif length(validNeighbors) >= 2
                 % Calculate the average based on the first, second, and third valid neighbors
                 targetAveragesAb(i) = mean(validNeighbors([1, 2]));
                 disp(targetAveragesAb(i))
-                disp("works! #2")
+
             else
                 disp(targetAveragesAb(current_point_index(i)));
                 targetAveragesAb(i) = validNeighbors(1);
-                disp("sth is off")
+                disp("Cannot Determine at least 2 neighbors. Check manually.")
             end
         end
     end
@@ -104,18 +103,16 @@ function target = updateOutliersWithNeighborValues(target)
                 % Calculate the average based on the first, second, and third valid neighbors
                 targetAveragesRt(i) = mean(validNeighbors([1, 2, 3]));
                 disp(targetAveragesRt(i))
-                disp("works!")
 
             elseif length(validNeighbors) >= 2
                 % Calculate the average based on the first, second, and third valid neighbors
                 targetAveragesRt(i) = mean(validNeighbors([1, 2]));
                 disp(targetAveragesRt(i))
-                disp("works!")
+
             else
                 disp(targetRt(current_point_index(i)));
-                %keyboard;
                 targetAveragesRt(i) = validNeighbors(1);
-                disp("sth is off")
+                disp("Cannot Determine at least 2 neighbors. Check manually.")
 
             end
         end
