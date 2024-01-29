@@ -1,9 +1,9 @@
 # Cobiveco v1.1 (CobivecoX)
 
-**Co**nsistent **bive**ntricular **co**ordinates (https://doi.org/10.1016/j.media.2021.102247 / https://arxiv.org/abs/2102.02898)
+**Co**nsistent **bive**ntricular **co**ordinates (https://doi.org/10.1016/j.media.2021.102247 / https://arxiv.org/abs/2102.02898 / https://doi.org/10.1016/j.media.2024.103091)
 
 ### CobivecoX on geometries including the four valve annuli
-![abstract_medima2023_whitebackground](https://user-images.githubusercontent.com/51908398/235209955-ebe255e9-03d2-462b-a67d-7cf24192612a.png)
+![CobivecoX_overview_coordinates](https://github.com/lisapankewitz/Cobiveco/assets/51908398/b70b3adf-971b-4cd9-8ad2-7552d494e0c1)
 
 ### Cobiveco 1.0 on geometries with a flat base
 ![Coordinates](https://user-images.githubusercontent.com/31965820/103575830-8bc56400-4ed2-11eb-913d-1bc1c338622d.png)
@@ -246,6 +246,8 @@ axel.loewe@kit.edu / www.ibt.kit.edu
 
 ## References
 [Schuler, S., Pilia, N., Potyagaylo, D., Loewe, A., 2021. Cobiveco: Consistent biventricular coordinates for precise and intuitive description of position in the heart – with MATLAB implementation. Medical Image Analysis.](https://doi.org/10.1016/j.media.2021.102247)
+
+[Pankewitz, L. et al., 2024. A universal biventricular coordinate system incorporating valve annuli: Validation in congenital heart disease. Medical Image Analysis.](https://doi.org/10.1016/j.media.2024.103091)
 
 [1] [Dapogny, C. et al., 2014. Three-dimensional adaptive domain remeshing, implicit domain meshing, and applications to free and moving boundary problems. J Comput Phys.](https://github.com/MmgTools/mmg)
 

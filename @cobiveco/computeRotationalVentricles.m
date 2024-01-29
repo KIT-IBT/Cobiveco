@@ -209,12 +209,12 @@ GFree = grad(double(free.points), double(free.cells));
 dSeptPost = solveTrajectDist(GSept, rtGrad(cellIdsSept,:), idsSeptPost, zeros(size(idsSeptPost)), o.cfg.tol, o.cfg.maxit);
 dSeptAnt = solveTrajectDist(GSept, -rtGrad(cellIdsSept,:), idsSeptAnt, zeros(size(idsSeptAnt)), o.cfg.tol, o.cfg.maxit);
 rtTrajectDistSept = dSeptPost./(dSeptAnt+dSeptPost);
-rtSept = 4/7 + 2/7 * (1-rtTrajectDistSept);
+rtSept = 2/3 + 1/3 * (1-rtTrajectDistSept);
 
 dFreePost = solveTrajectDist(GFree, rtGrad(cellIdsFree,:), idsFreePost, zeros(size(idsFreePost)), o.cfg.tol, o.cfg.maxit);
 dFreeAnt = solveTrajectDist(GFree, -rtGrad(cellIdsFree,:), idsFreeAnt, zeros(size(idsFreeAnt)), o.cfg.tol, o.cfg.maxit);
 rtTrajectDistFree = dFreePost./(dFreeAnt+dFreePost);
-rtFree = 4/7 * rtTrajectDistFree;
+rtFree = 2/3 * rtTrajectDistFree;
 
 rtTrajectDist = NaN(size(o.m2Ventricles.vol.points,1),1);
 rtTrajectDist(free.pointData.ids) = rtTrajectDistFree;

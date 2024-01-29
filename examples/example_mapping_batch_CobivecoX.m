@@ -1,6 +1,6 @@
-% This example calculates the two way mapping error as described by Bayer et al., 2018 by 
+% This example calculates the two way mapping error as described by Bayer et al., 2018 by
 % mapping CobivecoX coordinates between source and target.
-% Here, the user can add an excel file (ID) containing the names of the 
+% Here, the user can add an excel file (ID) containing the names of the
 % targets to map coordinates to and from.
 
 addpath('../utilities');
@@ -66,7 +66,6 @@ for i=1:size(ID,1)
         if ~isempty(outPath) && ~exist(outPath, 'dir')
             mkdir(outPath);
         end
-
         target = vtkRead(sprintf('%sresult.vtu', targetPrefix));
 
         % separate into ventricles and bridges
@@ -103,7 +102,7 @@ for i=1:size(ID,1)
         vtkWrite(s_ventricles, sprintf('%ss_ventricles.vtu', outputPrefix))
         vtkWrite(t_bridges, sprintf('%st_bridges.vtu', outputPrefix))
         vtkWrite(s_bridges, sprintf('%ss_bridges.vtu', outputPrefix))
-        
+
         %% Compute mapping matrix
         searchradius = 3;
         M = cobiveco_computeMappingMatrix(s_ventricles, t_ventricles, 'linear', searchradius, true);
@@ -138,7 +137,6 @@ for i=1:size(ID,1)
             ventricle_errors = [ventricle_errors EuclideanDistance];
             bridge_errors = [bridge_errors EuclideanDistance_b];
         end
-
         fprintf('Finished ID #%s\n', ID(i));
         fid = fopen('Finished_IDs','a+');
         fprintf(fid, 'instance %s \n', ID(i));

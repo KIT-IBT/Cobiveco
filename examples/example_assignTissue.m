@@ -18,7 +18,7 @@
 %     planeSpecificationForSpheres
 %
 % See also constructTissueEllipsoidWithSmallSpheres
-% 
+%
 % Simula 2022
 
 % The  main idea is to
@@ -42,7 +42,7 @@ end
 
 % Important that one uses the rotated result
 % (heart axis parallel with xyz-axes in Cartesian)
-source = vtkRead(sprintf('%sresult_R.vtu', sourcePrefix));
+source = vtkRead(sprintf('%sresultR.vtu', sourcePrefix));
 
 %% Choose characteristics of the ellipsoid and small spheres
 
@@ -50,7 +50,7 @@ source = vtkRead(sprintf('%sresult_R.vtu', sourcePrefix));
 centroidCobiveco = [1, 0.3,0.845, 0.67];
 
 % Choosing values for the semi-axes
-[xSemiaxisLength, ySemiaxisLength, zSemiaxisLength] = deal(9,2,2);
+[xSemiaxisLength, ySemiaxisLength, zSemiaxisLength] = deal(9,7,7);
 
 % Choosing distanceBetweenCentroidAndSphereCenters
 distanceBetweenCentroidAndSphereCenters = 5;

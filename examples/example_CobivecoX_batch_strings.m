@@ -29,7 +29,7 @@ for i=1:size(ID,1)
         c.prepareMesh0;
         if c.cfg.CobivecoX == true
             c.computeAllCobivecoX;
-        else 
+        else
             c.computeAllCobiveco;
         end
         config = c.cfg;
