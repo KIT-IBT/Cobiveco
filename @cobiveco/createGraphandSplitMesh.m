@@ -255,9 +255,10 @@ if o.cfg.exportLevel > 1
     testInfo = sur;
     testInfo.pointData.surClass = o.m0Ventricles.sur.pointData.class;
     testInfo.pointData.tv =  sur.tv;
+    vtkWrite(testInfo, sprintf('%sdebug.vtp', o.cfg.outPrefix));
+
 end
 
-vtkWrite(testInfo, sprintf('%sdebug.vtp', o.cfg.outPrefix));
 
 % extract only surface nodes
 o.m0RvBridge.sur= vtkDataSetSurfaceFilter(vtkDeleteDataArrays(o.m0RvBridge.vol));

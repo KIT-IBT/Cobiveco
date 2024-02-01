@@ -67,8 +67,12 @@ A(:,boundaryIds) = sparse(boundaryIds, 1:K, ones(K,1), N, K);
 p = symrcm(A);
 A = A(p,p);
 b = b(p);
-
-icMat = ichol_autocomp(A);
+try%This calculation of the icMat seems to fail sometimes but the subsequent minres works without it so adding this
+    %icMat = ichol_autocomp(A);
+    icMat = [];%I have actually found cases where this hurt more than it helped. Trying without.
+catch
+    icMat = [];
+end
 numTries = 1;
 for i = 1:numTries
     [x, flag, relres, iter] = minres(A, b, tol, maxit, icMat, icMat');

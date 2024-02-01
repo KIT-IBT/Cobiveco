@@ -128,6 +128,7 @@ The tested and recommended version of this code is currently using anaconda. You
 ## Dependencies
 
 Before using Cobiveco, its dependencies [[1](#1),[2](#2),[3](#3)] need to be installed by running [dependencies/install_cobiveco.sh](dependencies/install_cobiveco.sh).
+Note that this script was tested on MacOS.
 
 ## Usage
 
@@ -213,6 +214,10 @@ The following [examples](examples) illustrate the use of Cobiveco:
 * [example_CobivecoX.m](examples/example_CobivecoX.m): Computes coordinates on the mean shape of a Tetralogy of Fallot atlas including valve annuli.
 * [example_parcellation.m](examples/example_parcellation.m) and [example_extended_parcellation.m](examples/example_extended_parcellation.m): Add a parcellation in four different areas (left anterior, left posterior, right anterior and right posterior) to the given result form cobiveco or cobivecoX respectively.
 * [example_aha_parcellation.m](examples/example_aha_parcellation.m) and [example_extended_aha_parcellation.m](examples/example_extended_aha_parcellation.m): Add a parcellation according to the [AHA 17 segmentation model](https://www.ahajournals.org/doi/10.1161/hc0402.102975) and extending it also to the right ventricle to the given result form cobiveco or cobivecoX respectively.
+
+## Example Data
+
+Example data that is too big too be stored on github can be downloaded from the [zenodo repository](https://doi.org/10.5281/zenodo.7922601).
 
 ## Hints
 
