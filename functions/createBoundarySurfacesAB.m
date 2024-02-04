@@ -244,7 +244,7 @@ function [struct1, struct1FwBoundary, struct1SeptumBoundary] = createBoundarySur
         conda.setenv('base')
         conda.deactivate()
 
-        %fixing the pathing issues here
+        % Set path to pvpython script
         cobivecoFunctionsPath = which('createBoundarySurfaceRVLVOnVentricle.m');
         cobivecoFunctionsPath = cobivecoFunctionsPath(1:strfind(cobivecoFunctionsPath,'createBoundarySurfaceRVLVOnVentricle')-1);
         commandPvpython = sprintf('pvpython %spolydata2unstrucgrid.py struct1SeptumBoundary.vtk %sstruct1SeptumBoundary.vtk %sstruct1SeptumBoundaryUnstr.vtk',cobivecoFunctionsPath,cfg, cfg);
