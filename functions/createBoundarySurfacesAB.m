@@ -242,7 +242,6 @@ function [struct1, struct1FwBoundary, struct1SeptumBoundary] = createBoundarySur
         vtkWrite(struct1SeptumBoundary,sprintf('%sstruct1SeptumBoundaryStartingpoint.vtk', cfg));
         % deactivate conda and use pv python to convert polydata to unstructured grid
         conda.setenv('base')
-        %conda.setenv('ldrb')%What is this??
         conda.deactivate()
 
         %fixing the pathing issues here
@@ -253,8 +252,7 @@ function [struct1, struct1FwBoundary, struct1SeptumBoundary] = createBoundarySur
         if status ~= 0
             error('Paraview did not successfully transform polydata to unstructured grid. Need manual handling. Exiting.');
         end
-        % base conda environment should not need to be activated if set as
-        % default
+        % If conda base environment is not set as a default to be activated, please comment in:
         %conda.setenv('base')
         % export as vtk
         commandMeshio = sprintf('meshio convert %sstruct1SeptumBoundaryUnstr.vtk %sstruct1SeptumBoundaryUnstr.ply --ascii', cfg, cfg);
