@@ -68,18 +68,50 @@ p = symrcm(A);
 A = A(p,p);
 b = b(p);
 
-icMat = ichol_autocomp(A);
-numTries = 1;
+% Initialize icMat as empty
+icMat = [];
+numTries = 4;
+success = false; % Flag to track success
+initialTol = tol; % keep track of initial tolerance
+
+% Attempt to solve with empty icMat = [] with adaptive tolerance
+for i = 1:numTries
+    [x, flag, relres, iter] = minres(A, b, tol, maxit, icMat, icMat');
+    if ~flag
+        success = true;
+        break; % Exit loop if successful
+    else
+        warning('minres attempt %i with empty preconditioner failed with flag %i and relative residual %.1e. Trying a slightly bigger tolerance.', i, flag, relres);
+        if i < numTries
+            tol = 1.75 * tol; % Adjust tolerance for next attempt
+        end
+    end
+end
+
+% If unsuccessful with empty icMat, calculate icMat and try again
+if ~success
+    try
+    icMat = ichol_autocomp(A);
+    catch
+    error('Unable to solve: Calculation of icMat using ichol_autocomp failed, and no solution could be determined with an empty preconditioner.');
+end
+
+% Reset tolerance to initial value or to a specific value if needed
+tol = initialTol; % resetting tolerance before this loop
+
+% Retry with the calculated icMat, adjusting tolerance if needed
 for i = 1:numTries
     [x, flag, relres, iter] = minres(A, b, tol, maxit, icMat, icMat');
     if flag
         warning('minres failed at iteration %i with flag %i and relative residual %.1e.', iter, flag, relres);
         if i < numTries
             warning('Trying a slightly bigger tolerance.');
-            tol = 1.75 * tol;
+            tol = 1.75 * tol; % Adjust tolerance for next attempt
         else
-            warning('minres failed after trying %i different tolerances (last tol = %d)',numTries,tol);
+            warning('minres failed after %i attempts with different tolerances (last tol = %.1e)', numTries, tol);
         end
+    else
+        break; % Exit loop if successful
     end
 end
 

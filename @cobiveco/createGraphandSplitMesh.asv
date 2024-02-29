@@ -278,10 +278,10 @@ o.m0.vol.pointData.shortestpath_epi(o.m0.surToVol(arrayPath1MvAv_epi)) = 3;
 o.m0.vol.pointData.shortestpath_epi(o.m0.surToVol(arrayPath2MvAv_epi)) = 4;
 
 
-closestPointsInEpicardiumArrayPath1TvPv = o.m0.surToVol(arrayPath1TvPv_epi);
-closestPointsInEpicardiumArrayPath2TvPv = o.m0.surToVol(arrayPath2TvPv_epi);
-closestPointsInEpicardiumArrayPath1MvAv = o.m0.surToVol(arrayPath1MvAv_epi);
-closestPointsInEpicardiumArrayPath2MvAv = o.m0.surToVol(arrayPath2MvAv_epi);
+closestPointsInEpicardiumArrayPath1TvPv = arrayPath1TvPv_epi;
+closestPointsInEpicardiumArrayPath2TvPv = arrayPath2TvPv_epi;
+closestPointsInEpicardiumArrayPath1MvAv = arrayPath1MvAv_epi;
+closestPointsInEpicardiumArrayPath2MvAv = arrayPath2MvAv_epi;
 
 
 if o.cfg.exportLevel > 1

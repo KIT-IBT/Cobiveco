@@ -18,6 +18,8 @@ function [idxClosestPointsInEpicardium] = findMatchingPointinEpi(struct, arrayPa
 
 
     subsetPointsArrayPath1TvPv = struct.vol.points(struct.surToVol(arrayPathTvPv),:);
-    [index, distance] = knnsearch(struct.vol.points(nodesListEpicardium,:),subsetPointsArrayPath1TvPv);
+    %[index, distance] = knnsearch(struct.vol.points(nodesListEpicardium,:),subsetPointsArrayPath1TvPv);
+    [~,index] = pdist2(struct.vol.points(nodesListEpicardium,:),subsetPointsArrayPath1TvPv,'euclidean','Smallest',4);
+    index = unique(index);
     idxClosestPointsInEpicardium = nodesListEpicardium(index);
 end

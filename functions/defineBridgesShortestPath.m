@@ -105,15 +105,18 @@ function [mesh, pointIdsBridges] = defineBridgesShortestPath(mesh, path1, path2,
     [index2, dist2] = knnsearch(mesh.vol.points,pointsInPlane2Filtered);
 
     % use tenths percentile as threshold for distance search
-    threshold = prctile(dist2,15);
+    %threshold = max(dist2)+prctile(dist2,cfg.bridgeCutDistancePercentile);
+    threshold = max(dist2)+prctile(dist2,cfg.bridgeCutDistancePercentile);
 
-    [idx1,D1] = rangesearch(mesh.vol.points,pointsInPlane1Filtered,1.0,'NSMethod','exhaustive');
+    %[idx1,D1] = rangesearch(mesh.vol.points,pointsInPlane1Filtered,1.0,'NSMethod','exhaustive');
+    [idx1,D1] = rangesearch(mesh.vol.points,pointsInPlane1Filtered,threshold,'NSMethod','exhaustive');
     tf = ~cellfun(@isempty, idx1);
 
 	idx1Concat = [idx1{tf}] ;
     idx1Concat = idx1Concat';
 
-    [idx2,D2] = rangesearch(mesh.vol.points,pointsInPlane2Filtered,1.0,'NSMethod','exhaustive');
+    %[idx2,D2] = rangesearch(mesh.vol.points,pointsInPlane2Filtered,1.0,'NSMethod','exhaustive');
+    [idx2,D2] = rangesearch(mesh.vol.points,pointsInPlane2Filtered,threshold,'NSMethod','exhaustive');
     tf2 = ~cellfun(@isempty, idx2);
 
 	idx2Concat = [idx2{tf2}] ;

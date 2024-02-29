@@ -44,6 +44,17 @@ function computeApicobasalBridges(o)
 
     % Scale coordinate fsw
     abSept = 1 + 0.5 * abTrajectDistSept;
+    %fix any outliers
+    fixInds = abSept>1.5 | abSept < 0;
+    if any(fixInds)
+        warning('Needing to fix some fsw for the RV bridge')
+        %set them as the mean of their neighbors
+        perNeighborCells = o.m0RvBridge.vol.cells(fixInds,:);
+        PerNeighborValues = abSept(perNeighborCells);
+        neighborsToExclude = intersect(find(fixInds),unique(perNeighborCells(:)));
+        PerNeighborValues(ismember(perNeighborCells,neighborsToExclude)) = nan;
+        abSept(fixInds) = mean(PerNeighborValues,2,'omitnan');
+    end
 
     o.m0RvBridge.vol.cellData.abGrad = single(abGrad);
     o.m0RvBridge.vol.pointData.drvbridgePost = single(dLvBridgePostAb);
@@ -67,6 +78,16 @@ function computeApicobasalBridges(o)
 
     % Scale coordinate fsw
     abSept = 1 + 0.5 * abTrajectDistSept;
+    %fix any outliers
+    fixInds = abSept>1.5 | abSept < 0;
+    if any(fixInds)
+        warning('Needing to fix some fsw for the LV bridge')
+        perNeighborCells = o.m0LvBridge.vol.cells(fixInds,:);
+        PerNeighborValues = abSept(perNeighborCells);
+        neighborsToExclude = intersect(find(fixInds),unique(perNeighborCells(:)));
+        PerNeighborValues(ismember(perNeighborCells,neighborsToExclude)) = nan;
+        abSept(fixInds) = mean(PerNeighborValues,2,'omitnan');
+    end
 
     o.m0LvBridge.vol.cellData.abGrad = single(abGrad);
     o.m0LvBridge.vol.pointData.dlvbridgePost = single(dLvBridgePostAb);
