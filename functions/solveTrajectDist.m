@@ -94,6 +94,7 @@ if ~success
     icMat = ichol_autocomp(A);
     catch
     error('Unable to solve: Calculation of icMat using ichol_autocomp failed, and no solution could be determined with an empty preconditioner.');
+    end
 end
 
 % Reset tolerance to initial value or to a specific value if needed
