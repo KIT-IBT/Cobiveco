@@ -71,6 +71,7 @@ if tm == 0 % epicardium
         thetaEpi(1:2*r+1,1:r+1) = fliplr(thetaEpi(1:2*r+1,r+1:2*r+1));
 
         target.pointData.ab = rho(mask)/r;
+        target.pointData.rt = thetaEpi(mask);
         target.pointData.rtSin = sin(thetaEpi(mask));
         target.pointData.rtCos = cos(thetaEpi(mask));
         target.pointData.tm = zeros(nnz(mask),1);
@@ -89,6 +90,7 @@ elseif tm > 0 && tm <= 1 % endocardium / below-epicardium
     
     if ~precomputed
         target.pointData.ab    = repmat(rho(mask)/r, 2, 1);
+        target.pointData.rt = repmat(theta(mask), 2, 1);
         target.pointData.rtSin = [sin(-theta(mask)-1/3*pi); sin(theta(mask)-4/3*pi)];
         target.pointData.rtCos = [cos(-theta(mask)-1/3*pi); cos(theta(mask)-4/3*pi)];
         target.pointData.tm    = repmat(tm, 2*nnz(mask), 1);
@@ -118,6 +120,7 @@ elseif tm == -1 % epi- and endocardium
         thetaEpi(1:2*r+1,1:r+1) = fliplr(thetaEpi(1:2*r+1,r+1:2*r+1));
         
         target.pointData.ab    = repmat(rho(mask)/r, 3, 1);
+        target.pointData.rt    = [thetaEpi(mask); repmat(theta(mask), 2, 1)];
         target.pointData.rtSin = [sin(thetaEpi(mask)); sin(-theta(mask)-1/3*pi); sin(theta(mask)-4/3*pi)];
         target.pointData.rtCos = [cos(thetaEpi(mask)); cos(-theta(mask)-1/3*pi); cos(theta(mask)-4/3*pi)];
         target.pointData.tm    = [zeros(nnz(mask),1); ones(2*nnz(mask),1)];
