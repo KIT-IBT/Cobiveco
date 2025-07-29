@@ -199,7 +199,6 @@ Finally, once MATLAB has finished exporting the result, it can be visualized ope
 The following [utilities](utilities) are provided:
 
 * [cobiveco_computeMappingMatrix.m](utilities/cobiveco_computeMappingMatrix.m): Computes a matrix to map point data from a source to a target mesh.
-* [cobiveco_createPolarProjection.m](utilities/cobiveco_createPolarProjection.m): Creates a standardized visualization by projecting scalar data onto polar plots.
 * [cobiveco_applyAlignmentMatrix.m](utilities/cobiveco_applyAlignmentMatrix.m): Uses the matrix ``R`` computed by Cobiveco to align the heart axes with the global coordinate axes.
 
 ## Examples
@@ -209,7 +208,6 @@ The following [examples](examples) illustrate the use of Cobiveco:
 * [example_geo1.m](examples/example_geo1.m): Computes coordinates on [geo1](examples/geo1) &ndash; the mean shape of a statistical shape model [[4](#4),[5](#5)].
 * [example_geo2.m](examples/example_geo2.m): Computes coordinates on [geo2](examples/geo2) &ndash; a patient geometry.
 * [example_mapping_Cobiveco.m](examples/example_mapping_Cobiveco.m): Uses the coordinates to map data between geo1 and geo2 defaulting to Cobiveco1.0.
-* [example_polarProjection.m](examples/example_polarProjection.m): Uses the coordinates to project data onto polar plots.
 * [example_mapping_batch_CobivecoX.m](examples/example_mapping_batch_CobivecoX.m): calculates two way mapping error as described by [Bayer et al., 2018](https://www.sciencedirect.com/science/article/pii/S1361841518300203?via%3Dihub) by mapping coordinates between reference and cohort.
 * [example_CobivecoX.m](examples/example_CobivecoX.m): Computes coordinates on the mean shape of a Tetralogy of Fallot atlas including valve annuli.
 * [example_parcellation.m](examples/example_parcellation.m) and [example_extended_parcellation.m](examples/example_extended_parcellation.m): Add a parcellation in four different areas (left anterior, left posterior, right anterior and right posterior) to the given result form cobiveco or cobivecoX respectively.
