@@ -241,7 +241,7 @@ function [struct1, struct1FwBoundary, struct1SeptumBoundary] = createBoundarySur
         % polydata to unstr grid
         vtkWrite(struct1SeptumBoundary,sprintf('%sstruct1SeptumBoundaryStartingpoint.vtk', cfg));
         % deactivate conda and use pv python to convert polydata to unstructured grid
-        conda.setenv('base')
+        conda.setenv('cobiveco')
         conda.deactivate()
 
         % Set path to pvpython script
@@ -253,7 +253,7 @@ function [struct1, struct1FwBoundary, struct1SeptumBoundary] = createBoundarySur
             error('Paraview did not successfully transform polydata to unstructured grid. Need manual handling. Exiting.');
         end
         % If conda base environment is not set as a default to be activated, please comment in:
-        %conda.setenv('base')
+        %conda.setenv('cobiveco')
         % export as vtk
         commandMeshio = sprintf('meshio convert %sstruct1SeptumBoundaryUnstr.vtk %sstruct1SeptumBoundaryUnstr.ply --ascii', cfg, cfg);
         % call BFS program in python to define extra triangles
