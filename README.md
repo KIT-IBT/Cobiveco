@@ -33,18 +33,18 @@ Alternatively, `addons = matlab.addons.installedAddons` shows a list of all inst
 3. Install cmake using the command
 
    ```
-   $ brew install cmake 
+   brew install cmake 
    ```
 4. Install the dependencies [[1](#1),[2](#2),[3](#3)] needed running the [dependencies/install_cobiveco.sh](dependencies/install_cobiveco.sh) using the command
 
    ```
-   $ sh install_cobiveco.sh 
+   sh install_cobiveco.sh 
    ```
 
    **Note**: once mmg is installed, check that the ``bin`` directory is non-empty using the command
 
    ```
-   $ ls dependencies/mmg/build/bin
+   ls dependencies/mmg/build/bin
    ```
 
    If the files ``mmg2d_O3, mmg3d_O3, mmgs_O3`` are present, you can go on to the next step. Else perform download the mmg binary from [here](https://www.mmgtools.org/mmg-remesher-downloads) and move ``mmg2d_O3, mmg3d_O3, mmgs_O3`` to ``dependencies/mmg/build/bin``.
@@ -54,8 +54,8 @@ Alternatively, `addons = matlab.addons.installedAddons` shows a list of all inst
 6. Check that ``pvpython`` can be evoked from the commandline. If not, add the path to your ``~/.zshrc``.
    First, check where ``pvpython`` is located.
 
-   ```$
-   $ which pvpython
+   ```
+   which pvpython
    ```
 
    The output will look something like this:
@@ -84,23 +84,23 @@ or use conda to create a minimal environment
 The tested and recommended version of this code is currently using anaconda. You can install Anaconda using [this guide](https://docs.anaconda.com/anaconda/ install/mac-os/) (commandline-installation recommended).
    This [guide for conda](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html) might also be useful if the is user not familiar with it.
 
-8. Create a conda environment called base using the  ``cobivecox.yml. ``
+8. Create a conda environment.
 
    You can use the following command to create the python environment with the dependencies needed:
 
    ```
-   $ conda env create -f cobivecox.yml
+   conda env create -f requirements.txt -n cobiveco
    ```
 9. The conda path has to be put in manually in the code.Use the command
 
    ```
-   $ which conda
+   which conda
    ```
 
    or
 
    ```
-   $ conda env list
+   conda env list
    ```
 
    in the terminal to receive the path.
@@ -108,19 +108,19 @@ The tested and recommended version of this code is currently using anaconda. You
    Copy the path you got in line 19 of the function ``createBoundarySurfacesAB.m`` (you can find this function in the directory ``functions``)
 
    ```
-   $ condaPath = '{*the path from which conda*}';
+   condaPath = '{*the path from which conda*}';
    ```
 10. To avoid communication errors, open MATLAB from your terminal.
     One can add the shortcut to their ``~/.zshrc``
 
-```$
-   $ alias matlab="/Applications/MATLAB_R2022b.app/bin/matlab"
+```
+   alias matlab="/Applications/MATLAB_R2022b.app/bin/matlab"
 ```
 
    and then use the following command in the directory ``examples``
 
-```$
-   $ matlab
+```
+   matlab
 ```
 
    to open the program.
