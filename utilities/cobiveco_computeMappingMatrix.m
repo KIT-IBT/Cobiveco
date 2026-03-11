@@ -45,6 +45,35 @@ if ~isfield(target.pointData, 'rtSin') || ~isfield(target.pointData, 'rtCos')
     target.pointData.rtCos = cos(2*pi*target.pointData.rt);
 end
 
+%% Normalize rotational coordinate representation
+% Accept either:
+%   - pointData.rt in [0,1]
+%   - pointData.rtSin / pointData.rtCos
+%
+% Reconstruct missing rt from sin/cos when needed.
+
+for side = ["source","target"]
+    S = eval(side);
+
+    hasRt    = isfield(S.pointData, 'rt');
+    hasRtSin = isfield(S.pointData, 'rtSin');
+    hasRtCos = isfield(S.pointData, 'rtCos');
+
+    if ~hasRt && hasRtSin && hasRtCos
+        % atan2 returns angle in [-pi, pi], map to [0,1)
+        ang = atan2(S.pointData.rtSin, S.pointData.rtCos);
+        S.pointData.rt = mod(ang, 2*pi) / (2*pi);
+    elseif hasRt && (~hasRtSin || ~hasRtCos)
+        S.pointData.rt = min(max(S.pointData.rt,0),1);
+        S.pointData.rtSin = sin(2*pi*S.pointData.rt);
+        S.pointData.rtCos = cos(2*pi*S.pointData.rt);
+    elseif ~hasRt && ~(hasRtSin && hasRtCos)
+        error(['%s.pointData must contain either rt or both rtSin and rtCos.'], side);
+    end
+
+    eval([char(side) ' = S;']);
+end
+
 % Process source.pointData.ab
 sourceAb = source.pointData.ab;
 sourceRt = source.pointData.rt;
@@ -116,77 +145,49 @@ source.pointData.rtSin = sin(2*pi*source.pointData.rt);
 source.pointData.rtCos = cos(2*pi*source.pointData.rt);
 
 % repeat for target
-
-% Process source.pointData.ab
 targetAb = target.pointData.ab;
 targetRt = target.pointData.rt;
 
-% Find indices of values greater than 1.5 and smaller than 0
-targetIndicesAbOutlier = find(targetAb > 1.5 | targetAb < 0);
+hasTargetPoints = isfield(target, 'points') && ~isempty(target.points) ...
+    && size(target.points,1) == numel(targetAb);
 
+if hasTargetPoints
+    % Find indices of values greater than 1.5 and smaller than 0
+    targetIndicesAbOutlier = find(targetAb > 1.5 | targetAb < 0);
+    targetIndicesRtOutlier = find(targetRt > 1.5 | targetRt < 0);
 
-% Find indices of values greater than 1.5 and smaller than 0
-targetIndicesRtOutlier = find(targetRt > 1.5 | targetRt < 0);
+    % Find the 4 nearest neighbors for all target points
+    targetNeighborIndices = knnsearch(target.points, target.points, 'k', 4);
+    targetNeighborIndices = targetNeighborIndices(:, 2:end);
 
-% Find the 4 nearest neighbors for all target points
-targetNeighborIndices = knnsearch(target.points, target.points, 'k', 4); % Include itself as the first neighbor
+    % --- rt cleanup ---
+    validNeighborsRt = targetNeighborIndices( ...
+        targetRt(targetNeighborIndices) >= 0 & targetRt(targetNeighborIndices) <= 1.5);
+    validNeighborValuesRt = targetRt(validNeighborsRt);
 
-% Exclude the point itself (the first neighbor)
-targetNeighborIndices = targetNeighborIndices(:, 2:end);
+    if ~isempty(targetIndicesRtOutlier) && ~isempty(validNeighborsRt)
+        targetAveragesRt = accumarray(validNeighborsRt, validNeighborValuesRt, [numel(targetRt),1], @mean, NaN);
+        good = ~isnan(targetAveragesRt(targetIndicesRtOutlier));
+        targetRt(targetIndicesRtOutlier(good)) = targetAveragesRt(targetIndicesRtOutlier(good));
+    end
 
+    % --- ab cleanup ---
+    validNeighborsAb = targetNeighborIndices( ...
+        targetAb(targetNeighborIndices) >= 0 & targetAb(targetNeighborIndices) <= 1.5);
+    validNeighborValuesAb = targetAb(validNeighborsAb);
 
-
-% Filter neighbors with values greater than 1.5
-validNeighborsAb = targetNeighborIndices(targetAb(targetNeighborIndices) < 1.5 & targetAb(targetNeighborIndices) > 0);
-% Filter neighbors with values greater than 1.5
-validNeighborsRt = targetNeighborIndices(targetRt(targetNeighborIndices) < 1.5 & targetRt(targetNeighborIndices) > 0);
-
-
-% Filter neighbors with values greater than 1.5 or smaller than 0
-validNeighborsRt = targetNeighborIndices(targetRt(targetNeighborIndices) > 1.5 | targetRt(targetNeighborIndices) < 0);
-
-% Calculate the average values for valid neighbors
-validNeighborValuesRt = targetRt(validNeighborsRt);
-
-% Calculate the average of the values for the 3 nearest neighbors if there are targetIndices
-if ~isempty(targetIndicesRtOutlier)
-    % Calculate the average values for targetIndices
-    targetAveragesRt = accumarray(validNeighborsRt, validNeighborValuesRt, [], @mean);
-
-    % Ensure that each targetIndex has at least 3 valid neighbors
-    invalidIndices = find(targetAveragesRt(validNeighborsRt) < 1.5 & targetAveragesRt(validNeighborsRt) >= 0);
-    targetIndicesRtOutlier(invalidIndices) = [];
-
-    % Update targetRt with the calculated averages
-    targetRt(targetIndicesRtOutlier) = targetAveragesRt(targetIndicesRtOutlier);
+    if ~isempty(targetIndicesAbOutlier) && ~isempty(validNeighborsAb)
+        targetAveragesAb = accumarray(validNeighborsAb, validNeighborValuesAb, [numel(targetAb),1], @mean, NaN);
+        good = ~isnan(targetAveragesAb(targetIndicesAbOutlier));
+        targetAb(targetIndicesAbOutlier(good)) = targetAveragesAb(targetIndicesAbOutlier(good));
+    end
+else
+    % No target mesh geometry available (e.g. cobiveco_createPolarProjection).
+    % Skip neighbor-based cleanup and just keep the available pointData.
 end
 
-
-% Filter neighbors with values greater than 1.5 or smaller than 0
-validNeighborsAb = targetNeighborIndices(targetAb(targetNeighborIndices) > 1.5 | targetAb(targetNeighborIndices) < 0);
-
-% Calculate the average values for valid neighbors
-validNeighborValuesAb = targetAb(validNeighborsAb);
-
-% Calculate the average of the values for the 3 nearest neighbors if there are targetIndices
-if ~isempty(targetIndicesAbOutlier)
-    % Calculate the average values for targetIndices
-    targetAveragesAb = accumarray(validNeighborsAb, validNeighborValuesAb, [], @mean);
-
-    % Ensure that each targetIndex has at least 3 valid neighbors
-    invalidIndices = find(targetAveragesAb(validNeighborsAb) < 1.5 & targetAveragesAb(validNeighborsAb) >= 0);
-    targetIndicesAbOutlier(invalidIndices) = [];
-
-    % Update targetAb with the calculated averages
-    targetAb(targetIndicesAbOutlier) = targetAveragesAb(targetIndicesAbOutlier);
-end
-
-
-% Update target and target data with modified ab values
 target.pointData.ab = targetAb;
 target.pointData.rt = targetRt;
-
-% based on modification, recalculate sin and cos for rt
 
 target.pointData.rt = min(max(target.pointData.rt,0),1);
 target.pointData.rtSin = sin(2*pi*target.pointData.rt);
